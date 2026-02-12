@@ -1,0 +1,14 @@
++-- <sentence>
+    |-- <noun phrase>
+    |   |-- <adjective phrase>
+    |   |   |-- DETERMINER(that)
+    |   |   +-- ADJECTIVE(smart)
+    |   +-- NOUN(robot)
+    |-- <verb phrase>
+    |   |-- ADVERB(quickly)
+    |   +-- VERB(built)
+    +-- <noun phrase>
+        |-- <adjective phrase>
+        |   |-- DETERMINER(that)
+        |   +-- ADJECTIVE(small)
+        +-- NOUN(computer)

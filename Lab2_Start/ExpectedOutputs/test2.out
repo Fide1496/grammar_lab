@@ -1,0 +1,15 @@
++-- <sentence>
+    |-- <noun phrase>
+    |   |-- <adjective phrase>
+    |   |   |-- DETERMINER(our)
+    |   |   +-- ADJECTIVE(happy)
+    |   +-- NOUN(child)
+    |-- <verb phrase>
+    |   |-- ADVERB(very)
+    |   |-- ADVERB(quietly)
+    |   +-- VERB(builds)
+    +-- <noun phrase>
+        |-- <adjective phrase>
+        |   |-- DETERMINER(their)
+        |   +-- ADJECTIVE(old)
+        +-- NOUN(house)

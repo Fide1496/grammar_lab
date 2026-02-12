@@ -1,0 +1,14 @@
++-- <sentence>
+    |-- <noun phrase>
+    |   |-- <adjective phrase>
+    |   |   |-- DETERMINER(The)
+    |   |   +-- ADJECTIVE(BIG)
+    |   +-- NOUN(dog)
+    |-- <verb phrase>
+    |   |-- ADVERB(happily)
+    |   +-- VERB(eats)
+    +-- <noun phrase>
+        |-- <adjective phrase>
+        |   |-- DETERMINER(mY)
+        |   +-- ADJECTIVE(red)
+        +-- NOUN(HoMeWorK)
