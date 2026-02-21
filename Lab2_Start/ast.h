@@ -43,10 +43,10 @@ struct Node {
 // -----------------------------------------------------------------------------
 // Base AST node
 // -----------------------------------------------------------------------------
-struct Node {
-    virtual ~Node() = default;
-    virtual void print_tree(ostream& os, string prefix, bool last) = 0;
-};
+// struct Node {
+//     virtual ~Node() = default;
+//     virtual void print_tree(ostream& os, string prefix, bool last) = 0;
+// };
 
 // -----------------------------------------------------------------------------
 // Student AST design area
@@ -68,3 +68,50 @@ struct Node {
 //
 
 // --- Put your structs below this line ----------------------------------------
+
+// <adjective phrase> -> (ARTICLE | POSSESSIVE) ADJECTIVE
+struct AdjectivePhrase : Node
+{
+    string article;
+    string possivie;
+    string adj;
+};
+
+// <noun phrase>      -> <adjective phrase> NOUN
+struct NounPhrase : Node {
+    unique_ptr<AdjectivePhrase> adj;
+    string noun;
+
+    void print_tree(ostream& os, string prefix, bool last)
+    {
+        ast_line(os, prefix, last, "<noun phrase>");
+        string child_prefix = prefix + (last ? "   ": "|  ");
+
+        if (adj) adj -> print_tree(os, child_prefix, false);
+        ast_line(os, child_prefix, true, "NOUN("+ noun + ")");
+
+    }
+};
+
+// <verb phrase>      -> VERB | ADVERB <verb phrase>
+struct VerbPhrase : Node
+{
+    string verb;
+    string adverb;
+    unique_ptr<VerbPhrase> verb_phase;
+
+};
+
+// <sentence> -> <noun phrase> <verb phrase> <noun phrase>
+struct Sentence : Node
+{
+    unique_ptr<NounPhrase> noun1;
+    unique_ptr<VerbPhrase> verb;
+    unique_ptr<NounPhrase> noun2;
+
+};
+
+// <sentence>         -> <noun phrase> <verb phrase> <noun phrase>
+// <noun phrase>      -> <adjective phrase> NOUN
+// <adjective phrase> -> (ARTICLE | POSSESSIVE) ADJECTIVE
+// <verb phrase>      -> VERB | ADVERB <verb phrase>
