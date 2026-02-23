@@ -70,78 +70,77 @@ struct Node {
 // --- Put your structs below this line ----------------------------------------
 
 // <adjective phrase> -> (ARTICLE | POSSESSIVE) ADJECTIVE
+// <sentence> -> <noun phrase> <verb phrase> <noun phrase>
+
+
 struct AdjectivePhrase : Node
 {
-    string article;
-    string possivie;
-    string adj;
+    string determiner;
+    string adjective;
 
     void print_tree(ostream& os, string prefix, bool last)
     {
         ast_line(os, prefix, last, "<adjective phrase>");
-        string child_prefix = prefix + (last ? "   ": "|  ");
+        string child_prefix = prefix + (last ? "    ": "|   ");
 
-        if (!article.empty()) ast_line(os, child_prefix, false, "ARTICLE(" + article + ")");
-        if (!possivie.empty()) ast_line(os, child_prefix, false, "POSSESSIVE(" + possivie + ")");
-        ast_line(os, child_prefix, true, "ADJECTIVE(" + adj + ")");
+        ast_line(os, child_prefix, false, "DETERMINER(" + determiner + ")");
+        ast_line(os, child_prefix, true, "ADJECTIVE(" + adjective + ")");
     }
 };
 
 // <noun phrase> -> <adjective phrase> NOUN
 struct NounPhrase : Node {
-    unique_ptr<AdjectivePhrase> adj;
+    unique_ptr<AdjectivePhrase> ap;
     string noun;
 
     void print_tree(ostream& os, string prefix, bool last)
     {
         ast_line(os, prefix, last, "<noun phrase>");
-        string child_prefix = prefix + (last ? "   ": "|  ");
+        string child_prefix = prefix + (last ? "    ": "|   ");
 
-        if (adj) adj -> print_tree(os, child_prefix, false);
-        ast_line(os, child_prefix, true, "NOUN("+ noun + ")");
+        if (ap) ap -> print_tree(os, child_prefix, false);
+        ast_line(os, child_prefix, true, "NOUN(" + noun + ")");
 
     }
 };
+
+
 
 // <verb phrase>      -> VERB | ADVERB <verb phrase>
 struct VerbPhrase : Node
 {
     string verb;
-    string adverb;
-    unique_ptr<VerbPhrase> verb_phase;
+    vector<string> adverbs;
 
     void print_tree(ostream& os, string prefix, bool last)
     {
         ast_line(os, prefix, last, "<verb phrase>");
-        string child_prefix = prefix + (last ? "   ": "|  ");
+        string child_prefix = prefix + (last ? "    ": "|   ");
 
-        if (!adverb.empty()) ast_line(os, child_prefix, false, "ADVERB(" + adverb + ")");
+        for (const auto& adverb : adverbs) {
+            ast_line(os, child_prefix, false, "ADVERB(" + adverb + ")");
+        }
         ast_line(os, child_prefix, true, "VERB(" + verb + ")");
-
-        if(verb_phase) verb_phase -> print_tree(os, child_prefix, true);
     }
 
 };
 
-// <sentence> -> <noun phrase> <verb phrase> <noun phrase>
 struct Sentence : Node
 {
-
-    unique_ptr<NounPhrase> noun1;
+    unique_ptr<NounPhrase> subject_noun;
     unique_ptr<VerbPhrase> verb;
-    unique_ptr<NounPhrase> noun2;
+    unique_ptr<NounPhrase> object_noun;
 
     void print_tree(ostream& os, string prefix, bool last)
     {
         ast_line(os, prefix, last, "<sentence>");
-        string child_prefix = prefix + (last ? "   ": "|  ");
+        string child_prefix = prefix + (last ? "    ": "|   ");
 
-        if (noun1) noun1 -> print_tree(os, child_prefix, false);
+        if (subject_noun) subject_noun -> print_tree(os, child_prefix, false);
         if (verb) verb -> print_tree(os, child_prefix, false);
-        if (noun2) noun2 -> print_tree(os, child_prefix, true);
+        if (object_noun) object_noun -> print_tree(os, child_prefix, true);
     }
 };
-
 // <sentence>         -> <noun phrase> <verb phrase> <noun phrase>
 // <noun phrase>      -> <adjective phrase> NOUN
 // <adjective phrase> -> (ARTICLE | POSSESSIVE) ADJECTIVE
